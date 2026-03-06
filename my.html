@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoderTech — Professional Tech Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #0f1628;
+    --bg-card: #131b30;
+    --bg-card-hover: #192240;
+    --accent-orange: #e8872b;
+    --accent-orange-glow: rgba(232, 135, 43, 0.35);
+    --accent-blue: #1e90ff;
+    --accent-blue-glow: rgba(30, 144, 255, 0.25);
+    --accent-cyan: #00d4ff;
+    --text-primary: #f0f2f8;
+    --text-secondary: #8a92a8;
+    --text-muted: #5a6380;
+    --border-color: rgba(255,255,255,0.06);
+    --gradient-orange: linear-gradient(135deg, #e8872b 0%, #f5a623 100%);
+    --gradient-blue: linear-gradient(135deg, #1e90ff 0%, #00d4ff 100%);
+  }
+
+  html.dark {
+    /* already dark by default */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ============ CIRCUIT PATTERN SVG BG ============ */
+  .circuit-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 20% 50%, var(--accent-orange) 1px, transparent 1px),
+      radial-gradient(circle at 80% 20%, var(--accent-blue) 1px, transparent 1px),
+      radial-gradient(circle at 50% 80%, var(--accent-cyan) 1px, transparent 1px),
+      linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.03) 49.5%, rgba(255,255,255,0.03) 50.5%, transparent 50.5%),
+      linear-gradient(0deg, transparent 49.5%, rgba(255,255,255,0.03) 49.5%, rgba(255,255,255,0.03) 50.5%, transparent 50.5%);
+    background-size: 200px 200px, 300px 300px, 250px 250px, 80px 80px, 80px 80px;
+  }
+
+  /* ============ NAVBAR ============ */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 2rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+  }
+
+  .navbar.scrolled {
+    background: rgba(10, 14, 26, 0.95);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 38px; height: 38px;
+    background: var(--gradient-orange);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #fff;
+    box-shadow: 0 0 20px var(--accent-orange-glow);
+  }
+
+  .nav-logo-text {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+  }
+
+  .nav-logo-text span {
+    color: var(--accent-orange);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    background: var(--gradient-orange);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--accent-orange); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--gradient-orange) !important;
+    color: #fff !important;
+    padding: 8px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px var(--accent-orange-glow);
+    transition: transform 0.3s, box-shadow 0.3s !important;
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 30px var(--accent-orange-glow) !important;
+  }
+
+  .nav-cta::after { display: none !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1001;
+  }
+
+  .hamburger span {
+    width: 26px; height: 2px;
+    background: var(--text-primary);
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 2rem 80px;
+    overflow: hidden;
+  }
+
+  .hero-glow-1 {
+    position: absolute;
+    top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--accent-orange-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -20%; left: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--accent-blue-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232, 135, 43, 0.1);
+    border: 1px solid rgba(232, 135, 43, 0.25);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-orange);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease 0.15s forwards;
+    opacity: 0;
+  }
+
+  .hero-title .highlight {
+    background: var(--gradient-orange);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+    font-weight: 400;
+    line-height: 1.7;
+    animation: fadeInUp 0.8s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 0.45s forwards;
+    opacity: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--gradient-orange);
+    color: #fff;
+    box-shadow: 0 4px 25px var(--accent-orange-glow);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 40px var(--accent-orange-glow);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+    transform: translateY(-3px);
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 4rem;
+    animation: fadeInUp 0.8s ease 0.6s forwards;
+    opacity: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--accent-orange);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ SECTION COMMON ============ */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 2rem;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    color: var(--text-secondary);
+    max-width: 550px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+  }
+
+  .divider-line {
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-orange);
+    margin: 1rem auto 0;
+    border-radius: 3px;
+  }
+
+  /* ============ SERVICES ============ */
+  #services {
+    background: var(--bg-secondary);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--gradient-orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-6px);
+    border-color: rgba(232, 135, 43, 0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .service-icon {
+    width: 56px; height: 56px;
+    background: rgba(232, 135, 43, 0.1);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    color: var(--accent-orange);
+    margin-bottom: 1.25rem;
+    transition: all 0.3s;
+  }
+
+  .service-card:hover .service-icon {
+    background: var(--gradient-orange);
+    color: #fff;
+    box-shadow: 0 0 25px var(--accent-orange-glow);
+  }
+
+  .service-name {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+
+  .service-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ============ ABOUT ============ */
+  #about {
+    background: var(--bg-primary);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-visual-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-visual-box::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, var(--accent-orange-glow) 0%, transparent 50%);
+    opacity: 0.15;
+  }
+
+  .about-code-block {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-code-block .keyword { color: var(--accent-orange); }
+  .about-code-block .string { color: #7ec699; }
+  .about-code-block .func { color: var(--accent-cyan); }
+  .about-code-block .comment { color: var(--text-muted); opacity: 0.6; }
+
+  .about-text h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-text h3 span { color: var(--accent-orange); }
+
+  .about-text p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .about-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .about-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  .about-features li i {
+    color: var(--accent-orange);
+    font-size: 0.9rem;
+    width: 20px;
+  }
+
+  /* ============ CONTACT ============ */
+  #contact {
+    background: var(--bg-secondary);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-info h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-info > p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .contact-item-icon {
+    width: 44px; height: 44px;
+    min-width: 44px;
+    background: rgba(232, 135, 43, 0.1);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent-orange);
+    font-size: 1rem;
+  }
+
+  .contact-item-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-item-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .contact-item-value {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    word-break: break-all;
+  }
+
+  .contact-item-value a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .contact-item-value a:hover {
+    color: var(--accent-orange);
+  }
+
+  .contact-form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem;
+  }
+
+  .contact-form-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px var(--accent-orange-glow);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--gradient-orange);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px var(--accent-orange-glow);
+  }
+
+  .form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 35px var(--accent-orange-glow);
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    position: relative;
+    z-index: 1;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 2rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-brand-icon {
+    width: 32px; height: 32px;
+    background: var(--gradient-orange);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  .footer-brand-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .footer-brand-text span { color: var(--accent-orange); }
+
+  .footer-copy {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  .footer-socials a {
+    width: 38px; height: 38px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .footer-socials a:hover {
+    background: var(--accent-orange);
+    color: #fff;
+    border-color: var(--accent-orange);
+    transform: translateY(-3px);
+  }
+
+  /* ============ SCROLL ANIMATIONS ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ TOAST ============ */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--accent-orange);
+    border-radius: 12px;
+    padding: 16px 24px;
+    color: var(--text-primary);
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .toast i { color: var(--accent-orange); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      background: rgba(10, 14, 26, 0.98);
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      z-index: 999;
+    }
+    .nav-links.open a { font-size: 1.3rem; }
+    .hamburger { display: flex; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-number { font-size: 1.5rem; }
+
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .hero { padding: 100px 1.2rem 60px; }
+    section { padding: 70px 1.2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; gap: 1rem; }
+    .contact-form-card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Circuit Pattern Background -->
+<div class="circuit-bg"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon"><img src="good.png" alt="on side" width="100px"></div>
+    <div class="nav-logo-text">CODER<span>TECH</span></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero" onclick="closeMenu()">Home</a></li>
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    <li><a href="#contact" class="nav-cta" onclick="closeMenu()">Get Started</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span> Innovate &bull; Code &bull; Solve
+    </div>
+    <h1 class="hero-title">
+      Professional Tech Services<br>
+      to <span class="highlight">Boost Your Business</span>
+    </h1>
+    <p class="hero-subtitle">
+      Expert solutions for your digital needs. We deliver cutting-edge web development,
+      design, and technology services that drive growth and innovation.
+    </p>
+    <div class="hero-buttons">
+      <a href="#services" class="btn btn-primary"><i class="fas fa-rocket"></i> Our Services</a>
+      <a href="#contact" class="btn btn-outline"><i class="fas fa-envelope"></i> Contact Us</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number" data-count="500">0</div>
+        <div class="stat-label">Projects Done</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="200">0</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="10">0</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-desc">Comprehensive tech solutions tailored to elevate your business in the digital landscape.</p>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-code"></i></div>
+      <div class="service-name">Web Creation</div>
+      <div class="service-desc">Custom, responsive websites built with modern frameworks and best practices. From landing pages to full-scale web applications.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+      <div class="service-name">Photoshop & Design</div>
+      <div class="service-desc">Professional graphic design, photo editing, branding, and visual content creation that makes your brand stand out.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-clipboard-list"></i></div>
+      <div class="service-name">Online Registration</div>
+      <div class="service-desc">Streamlined digital registration systems and form solutions for events, memberships, and organizational management.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-file-word"></i></div>
+      <div class="service-name">Microsoft Office</div>
+      <div class="service-desc">Expert document creation, presentation design, and office suite solutions. Professional templates and automation workflows.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-table"></i></div>
+      <div class="service-name">Excel & Data</div>
+      <div class="service-desc">Advanced spreadsheets, data analysis, dashboards, and automated reporting solutions to power your business decisions.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-cogs"></i></div>
+      <div class="service-name">Tech Consulting</div>
+      <div class="service-desc">Strategic technology guidance, IT solutions, and digital transformation planning to keep your business ahead of the curve.</div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="section-header reveal">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title">About CoderTech</h2>
+    <p class="section-desc">A dedicated team of tech professionals passionate about delivering innovative digital solutions.</p>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-visual-box">
+        <div class="about-code-block">
+          <span class="comment">// CoderTech mission</span><br>
+          <span class="keyword">const</span> <span class="func">mission</span> = {<br>
+          &nbsp;&nbsp;<span class="keyword">goal</span>: <span class="string">"Empower businesses"</span>,<br>
+          &nbsp;&nbsp;<span class="keyword">method</span>: <span class="string">"Innovation + Code"</span>,<br>
+          &nbsp;&nbsp;<span class="keyword">result</span>: <span class="string">"Digital growth"</span>,<br>
+          &nbsp;&nbsp;<span class="keyword">passion</span>: <span class="string">"Infinite"</span><br>
+          };<br><br>
+          <span class="keyword">function</span> <span class="func">deliver</span>(client) {<br>
+          &nbsp;&nbsp;<span class="keyword">return</span> {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;quality: <span class="string">"Premium"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;support: <span class="string">"24/7"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;satisfaction: <span class="string">"Guaranteed"</span><br>
+          &nbsp;&nbsp;};<br>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h3>Innovate. <span>Code.</span> Solve.</h3>
+      <p>
+        At CoderTech, we combine technical expertise with creative thinking to deliver
+        solutions that transform businesses. Our team is committed to staying ahead of
+        industry trends and providing services that exceed expectations.
+      </p>
+      <p>
+        Whether you need a stunning website, professional designs, or streamlined
+        digital processes, we're here to make it happen.
+      </p>
+      <ul class="about-features">
+        <li><i class="fas fa-check-circle"></i> Cutting-edge web development</li>
+        <li><i class="fas fa-check-circle"></i> Professional design & branding</li>
+        <li><i class="fas fa-check-circle"></i> Data-driven solutions</li>
+        <li><i class="fas fa-check-circle"></i> Reliable tech support</li>
+        <li><i class="fas fa-check-circle"></i> Fast turnaround times</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-desc">Ready to start your project? Reach out and let's build something great together.</p>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Let's Connect</h3>
+      <p>We'd love to hear about your project. Get in touch with our team through any of the channels below.</p>
+
+      <div class="contact-item">
+        <div class="contact-item-icon"><i class="fas fa-phone"></i></div>
+        <div class="contact-item-text">
+          <div class="contact-item-label">Phone</div>
+          <div class="contact-item-value">
+            <a href="tel:09060482021">0906 048 2021</a> &nbsp;|&nbsp; <a href="tel:07083526460">0708 352 6460</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
+        <div class="contact-item-text">
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">
+            <a href="mailto:nancwatbendeltongdiya@gail.com">nancwatbendeltongdiya@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="contact-item-text">
+          <div class="contact-item-label">Address</div>
+          <div class="contact-item-value">123 Tech Street, Suite 456,<br>Tech City, TX 12345</div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon"><i class="fas fa-globe"></i></div>
+        <div class="contact-item-text">
+          <div class="contact-item-label">Website</div>
+          <div class="contact-item-value">
+            <a href="https://www.codertech.com" target="_blank" rel="noopener noreferrer">www.codertech.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-card reveal">
+      <h3>Send Us a Message</h3>
+      <form id="contactForm" onsubmit="handleFormSubmit(event)">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" placeholder="Project inquiry...">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell us about your project..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-icon"><img src="good.png" alt="on side" width="200%"></div>
+
+    </div>
+    <div class="footer-copy">&copy; 2026 CoderTech. All rights reserved.</div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMsg">Message sent!</span>
+</div>
+
+<script>
+  // Dark mode detection
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  });
+
+  // Navbar scroll effect
+  var navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    var navLinks = document.getElementById('navLinks');
+    var hamburger = document.getElementById('hamburger');
+    navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active');
+  }
+
+  function closeMenu() {
+    var navLinks = document.getElementById('navLinks');
+    var hamburger = document.getElementById('hamburger');
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('active');
+  }
+
+  // Animated counters
+  function animateCounters() {
+    var counters = document.querySelectorAll('.stat-number');
+    counters.forEach(function(counter) {
+      var target = parseInt(counter.getAttribute('data-count'), 10);
+      var duration = 2000;
+      var start = 0;
+      var startTime = null;
+
+      function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+      }
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var easedProgress = easeOutQuart(progress);
+        counter.textContent = Math.floor(easedProgress * target) + '+';
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      }
+
+      window.requestAnimationFrame(step);
+    });
+  }
+
+  // Intersection Observer for scroll animations
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  // Counter observer
+  var statsObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounters();
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  var heroStats = document.querySelector('.hero-stats');
+  if (heroStats) {
+    statsObserver.observe(heroStats);
+  }
+
+  // Toast notification
+  function showToast(message) {
+    var toast = document.getElementById('toast');
+    var toastMsg = document.getElementById('toastMsg');
+    toastMsg.textContent = message;
+    toast.classList.add('show');
+    setTimeout(function() {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Form submission
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    var form = document.getElementById('contactForm');
+    showToast('Message sent successfully! We\'ll get back to you soon.');
+    form.reset();
+  }
+
+  // Staggered reveal for service cards
+  var serviceCards = document.querySelectorAll('.service-card.reveal');
+  serviceCards.forEach(function(card, index) {
+    card.style.transitionDelay = (index * 0.1) + 's';
+  });
+</script>
+</body>
+</html>
+
+
